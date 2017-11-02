@@ -1,0 +1,245 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>qq</title>
+	<link rel="stylesheet" href="reset.css" />
+</head>
+<body>
+	<div id="all">
+		<div id="qBody">
+		</div>
+		<div id="header">
+			<div class="eye"><em></em></div>
+			<div class="eye reye"><em></em></div>
+			<div id="mouth">
+				<em></em>
+			</div>
+		</div>
+		<div id="arms"></div>
+		<div id="weibo"></div>
+		<div id="lweibo"></div>
+		<div class="foot"><em></em></div>
+		<div class="foot rfoot"><em></em></div>
+	</div>
+<style type="text/css">
+	
+	#all{
+		width:300px;
+		height:600px;
+		margin:0 auto;
+		position:relative;
+	}
+	/*头*/
+	#qBody{
+		position: absolute;
+        z-index: 1;
+	}
+	/*身子*/
+	#qBody::before{
+		content:' ';
+		background:#000;
+		width:360px;
+		height:320px;
+		position: absolute;
+	    top: 170px;
+	    left: -30px;
+		border-radius:50% 50% 60% 60%/65% 65% 60% 60%;
+	}
+	/*身子的白色*/
+	#qBody::after{
+		content:' ';
+		background:#fff;
+		width:330px;
+		height:280px;
+		position:absolute;
+		top:205px;
+		left:-17.5px;
+		border-radius:60% 60% 80% 80%/80% 80% 80% 80%;
+	}
+	/*头*/
+	#header{
+        background:#000;
+        width:300px;
+        height:240px;
+        border-radius:50% 50% 50% 50%/65% 65% 40% 40%;
+		position:absolute;
+		z-index:10;
+    }
+	/*胳膊*/
+	#arms::before,#arms::after{
+		content:' ';
+		background:#000;
+		width:240px;
+		height:50px;
+		border-radius:60% 80% 60% 60%/90% 100% 30% 35%;
+		position:absolute;
+		top:265px;
+		left:-160px;
+		-webkit-transform:rotate(-60deg);
+		-moz-transform:rotate(-60deg);
+		-ms-transform:rotate(-60deg);
+		-o-transform:rotate(-60deg);
+		transform:rotate(-60deg);
+	}
+	#arms::after{
+		left:220px;
+		-webkit-transform:rotate(60deg);
+        -moz-transform:rotate(60deg);
+        -ms-transform:rotate(60deg);
+        -o-transform:rotate(60deg);
+        transform:rotate(60deg);
+	}
+	.foot{
+		width:120px;
+		height:50px;
+		background:#F89B0F;
+		position:absolute;
+		border:5px solid #000;
+		top:440px;
+		left:-30px;
+		border-radius:60% 60% 60% 60%/100% 100% 50% 50%;
+	}
+	.foot em{
+		height:10px;
+		width:40px;
+		background:#000;
+		display:inline-block;
+		top:33px;
+		border-radius:50%;
+		position:absolute;
+		
+		-webkit-transform:rotate(-5deg);
+        -moz-transform:rotate(-5deg);
+        -ms-transform:rotate(-5deg);
+        -o-transform:rotate(-5deg);
+        transform:rotate(-5deg);
+	}
+	.foot em::after{
+		content:' ';
+		width:40px;
+		height:10px;
+		background:#F89B0F;
+		top:1px;
+		left:5px;
+		position:absolute;
+		border-radius:50%;
+		
+		-webkit-transform:rotate(-5deg);
+        -moz-transform:rotate(-5deg);
+        -ms-transform:rotate(-5deg);
+        -o-transform:rotate(-5deg);
+        transform:rotate(-5deg);
+	}
+	.rfoot{
+		left:190px;
+	}
+	.rfoot em{
+		left:80px;
+		-webkit-transform:rotate(5deg);
+        -moz-transform:rotate(5deg);
+        -ms-transform:rotate(5deg);
+        -o-transform:rotate(5deg);
+        transform:rotate(5deg);
+	}
+	.rfoot em::after{
+		top:1px;
+		left:-5px;
+		-webkit-transform:rotate(5deg);
+        -moz-transform:rotate(5deg);
+        -ms-transform:rotate(5deg);
+        -o-transform:rotate(5deg);
+        transform:rotate(5deg);
+	}
+	/*眼睛*/
+    .eye{
+    	width:50px;
+		height:75px;
+		position:absolute;
+		top:65px;
+		left:80px;
+		border-radius:50%;
+		background:#fff;
+    }
+	.eye em{
+		width:20px;
+        height:30px;
+        position:absolute;
+        top:25px;
+        left:20px;
+		z-index:1000;
+        border-radius:50%;
+        background:#000;
+	}
+	.reye{
+		left:160px;
+	}
+	.reye em{
+		left:10px;
+	}
+	.reye em::after{
+		width:30px;
+        height:30px;
+        position:absolute;
+        top:10px;
+		left:-5px;
+        z-index:1000;
+        border-radius:50%;
+        background:#fff;
+		content:' ';
+	}
+	/*嘴巴*/
+	#mouth{
+		width:200px;
+		height:50px;
+		position:absolute;
+		top:165px;
+		left:50px;
+		background:#F89B0F;
+		border-radius:80%;
+	}
+	#mouth em{
+		position:absolute;
+		top:10px;
+		left:40px;
+		width: 120px;
+        height:35px;
+        background:#000;
+		border-radius:50%;
+	}
+	#mouth em::after{
+		position:absolute;
+        top:-3px;
+		left:-15px;
+        width: 150px;
+        height:30px;
+        background:#F89B0F;
+        border-radius:50%;
+		z-index:1000;
+		content:' ';
+	}
+	/*微博*/
+	#weibo{
+		width:300px;
+		background:#E21416;
+		height:80px;
+		top:180px;
+		border:3px solid #000;
+		position:absolute;
+		z-index:5;
+		border-radius:10% 10% 50% 50%/30% 30% 150% 150%;
+	}
+    #lweibo{
+    	width:50px;
+		height:80px;
+		position:absolute;
+		top:235px;
+		left:30px;
+		border:3px solid #000;
+		background:#E21416;
+		z-index:1;
+		border-radius:50% 30%;
+    }
+</style>
+</body>
+</html>

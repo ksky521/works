@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>html5 canvas走迷宫</title>
+<style type="text/css">
+	.canvas{
+		position:relative;
+		min-height:500px;
+		min-width:500px;
+		float:left;
+		-webkit-transition: all .8s;
+        -moz-transition: all .8s;
+        -o-transition: all .8s;
+        transition: all .8s;
+	}
+
+	#maze,#sprite{
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:1;
+	}
+	#sprite{z-index:2;top:3px;left:3px;}
+	input{
+		width:40px;
+	}
+    .ctrl{
+    	width:310px;
+		margin-left:10px;
+		float:left;
+    }
+</style>
+</head>
+<body>
+	<div class="canvas" id="canvas">
+        <canvas id="maze" width="500" height="500"></canvas>
+        <canvas id="sprite" width="500" height="500"></canvas>
+    </div>
+	<div class="ctrl">
+		<p>操作指南：方向键控制运动，出口在右下方</p>
+		<p>迷宫格子数：<input type="text" id="width" value="39" /> × <input type="text" id="height" value="25" /></p>
+		<p>迷宫格子宽度：<input type="text" id="gridWidth" value="24" /></p>
+		<p><button onclick="create();">生成迷宫</button></p>
+		<p>作者：<a href="//weibo.com/sanshuiqing" target="_blank">三水清</a> <a href="//js8.in" target="_blank">博客</a></p>
+	</div>
+	<script type="text/javascript" src="js/sprite.js"></script>
+	<script type="text/javascript" src="js/maze.js"></script>
+	<script type="text/javascript">
+		var maze,sprite;
+		function create() {
+			var obj = {
+				width:30,
+				height:25,
+				gridWidth:30
+			},doit = !0;
+			'width height gridWidth'.replace(/\S+/g,function(a){
+				if(!doit){
+					return;
+				}
+				var val = $(a).value;
+                if(/\d+/.test(val)){
+                    obj[a] = val;
+                }else{
+                    doit = !1;
+					alert('请填写数字');
+					$(a).focus();
+                }
+			});
+			if(!doit){
+				return;
+			}
+			
+			var X = obj.width, Y = obj.height,gridWidth = obj.gridWidth;
+			maze = new Maze('maze', X, Y, gridWidth);
+			maze.create();
+			sprite && sprite.clear && sprite.clear();
+			sprite = new Sprite('sprite', X, Y, gridWidth, gridWidth-6);
+			sprite.animate();
+			removeEvent();
+			bindEvent();
+			$('canvas').style.width = $('maze').getAttribute('width')+'px';
+			$('canvas').style.height = $('maze').getAttribute('height')+'px';
+		}
+		/**
+		 * 绑定事件函数
+		 */
+		function bindEvent(){
+			document.addEventListener('keydown',evtKeyDown);
+			document.addEventListener('keyup',evtKeyUp);
+		}
+		function removeEvent(){
+			document.removeEventListener('keydown',evtKeyDown);
+            document.removeEventListener('keyup',evtKeyUp);
+		}
+		/**
+		 * 方向和按键值对应关系表
+		 */
+		var dirObj = {
+			37:'W',//右 W
+			38:'N',//上 N
+			39:'E',//左 E
+			40:'S'//下 S
+		};
+		
+		/**
+		 * 事件处理函数
+		 * @param {Object} e
+		 */
+		function evtKeyDown(e){
+			
+			var dir = dirObj[e.keyCode];
+			
+			if(dir){
+				if(canIMove(dir)){
+//				    sprite.clearSay();
+					sprite.stopMove();
+					sprite.goDir(dir);
+					e.preventDefault();
+				}else{
+//					sprite.say('过不去%>_<%');
+				}
+			}
+		}
+		function evtKeyUp(e){
+			e.preventDefault();
+			sprite.stopMove();
+		}
+		/**
+		 * 判断方向是否可以运动
+		 * @param {Object} dir
+		 */
+		function canIMove(dir){
+			var xy = sprite.getXY();
+			var val = maze.stackObj[xy];
+			
+			if(val & maze.bit[dir]){
+				return true;
+			}
+			return false;
+		}
+		function $(id){
+			return document.getElementById(id);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+	body{
+		padding:0;
+		margin:0;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="480" height="480"></canvas>
+	<script type="text/javascript">
+var canvas = document.getElementById('canvas');
+var ctxt = canvas.getContext('2d');
+var img = new Image, data;
+img.onload = function(){
+	ctxt.drawImage(img, 0, 0);
+	data = ctxt.getImageData(0, 0, 480, 480).data;	
+}
+
+img.src = 'img/pic.jpg';
+
+function draw(img){
+	ctxt.clearRect(0, 0, 480, 480);
+	// console.log(img);
+	ctxt.putImageData(img,0,0);
+}
+
+function invert(){
+	var back = ctxt.createImageData(480, 480);
+	var arr = back.data;
+
+	for(var i=0,len = data.length;i<len;i+=4){
+		var red = data[i],
+			green = data[i+1],
+			blue = data[i+2],
+			alpha = data[i+3];
+
+		arr[i] = 255-red;
+		arr[i+1] = 255-green;
+		arr[i+2] = 255-blue;
+		arr[i+3] = alpha;
+	}
+	return back;
+}
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>img </title>
+	<script src="js/img.js"></script>
+	<script src="js/effect.js"></script>
+</head>
+<body>
+	<img src="img/Butterfly.jpg" alt="">
+	<canvas id="canvas"></canvas>
+	<script>
+	var img = new Image();
+	img.src = 'img/Butterfly.jpg';
+	var canvas = document.getElementById('canvas');
+	img.onload = function(){
+		var t = new Theo();
+		canvas.width = this.width;
+		canvas.height = this.height;
+		var imgData = t.toImageData(this);
+		// imgData = t.process(imgData,removeNoise,[true,false] );
+		imgData = t.process(t.process(imgData,noise,[10] ), removeNoise);
+        var ctx = t.getCanvasContext(canvas);
+        ctx.putImageData(imgData,0,0);
+	}
+	</script>
+</body>
+</html>

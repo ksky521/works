@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>迷宫</title>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="500"></canvas>
+    <script type="text/javascript" src="maze.js"></script>
+	<script type="text/javascript">
+		var X = 49, Y = 29;
+		
+		var maze = new Maze('canvas',X,Y,20);
+		maze.create();
+	</script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+	#all{
+		position: relative;
+	}
+	#canvas,#img{
+		position: absolute;
+		top:0;
+		left:0;
+	}
+	</style>
+</head>
+<body>
+<video id="webcam" autoplay width="640" height="480" style="display:none;"></video>
+<div id="all">
+<canvas id="canvas" width="640" height="480"></canvas>
+<canvas id="img" width="640" height="480"></canvas>
+</div>
+<script type="text/javascript">
+"use strict";
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var width = 640, height = 480;
+var imgCanvas = document.getElementById('img');
+var imgContext = imgCanvas.getContext('2d');
+var video = document.getElementById('webcam');
+(function() {
+	var i = 0,
+		lastTime = 0,
+		vendors = ['webkit', 'moz', 'ms', 'o'],
+		len = vendors.length;
+	
+	while (i < len && !window.requestAnimationFrame) {
+		window.requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
+		i++;
+	}
+	i = 0;
+	while(i<len && !navigator.getUserMedia){
+		navigator.getUserMedia = navigator[vendors[i]+'GetUserMedia'];
+		i++;
+	}
+	if (!window.requestAnimationFrame) {
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime(),
+				timeToCall = Math.max(0, 1000 / 60 - currTime + lastTime),
+				id = setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+			
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+	}
+}());
+try {
+	navigator.getUserMedia({
+		video: true,
+		audio: false
+	}, start, function(){
+		alert('不支持getUserMedia');
+	});
+} catch (e) {
+	try {
+		navigator.getUserMedia('video', start, function(){
+			alert('不支持getUserMedia');
+		});
+	} catch (e) {}
+}
+function start(stream) {
+	video.addEventListener('canplay', function() {
+		video.removeEventListener('canplay');
+		setTimeout(function() {
+			video.play();
+			canvas.style.display = 'inline';
+			draw();
+		}, 500);
+	}, true);
+
+	var domURL = window.URL || window.webkitURL;
+	video.src = domURL ? domURL.createObjectURL(stream) : stream;
+}
+var data1 = [], data2 = [];
+var img = new Image;
+img.src = 'img/pic.jpg';
+function draw() {
+	requestAnimationFrame(draw);	
+	context.clearRect(0, 0, width, height);
+	context.drawImage(video, 0, 0, width, height);
+	data2 = data1.length ? data1: [];
+	// console.log(data1.length);
+	data1 = context.getImageData(0, 0, width, height).data;
+	// context.clearRect(0, 0, width, height);
+	// context.putImageData(disColor(),0,0);
+	context.putImageData(blackAndWhite(),0,0);
+	// imgContext.drawImage(img,100,100,100,100);
+	// check();
+}
+function blackAndWhite4() {	
+	var back = context.createImageData(width, height);
+	var arr = back.data, srcLength = arr.length;
+	var dst = [];
+	var average1,average2;
+	for (var i = 0; i < srcLength; i += 4) {
+		average1 = (data1[i] * 4899 + data1[i + 1] * 9617 + data1[i + 2] * 1868 + 8192) >> 14;
+		average2 = (data2[i] * 4899 + data2[i + 1] * 9617 + data2[i + 2] * 1868 + 8192) >> 14;
+		var diff = dst[i >> 2] = threshold(fastAbs(average2 - average1));
+		// arr[i] = diff;
+		// arr[i+1] = diff;
+		// arr[i+2] = diff;
+		// arr[i+3] = 255;
+	}
+	
+	var grid = 40,half = grid*grid/2;
+	var wTH = width/grid, hTH = height/grid;
+	var arrBack = [];
+	for(var x =0;x<wTH;x++){
+		for(var y = 0;y<hTH;y++){
+			var index = wTH*y+x;
+			var a = 0,b = 0, isBlack = 0;
+			abc:{
+				for(i = 0;i<grid;i++){
+					for(var j = 0;j<grid;j++){
+						
+						var myIndex = index*grid;
+						myIndex += j*width;
+						myIndex += x*grid+i;	
+						var c = dst[myIndex];
+						if(c===255){
+							
+							if(++a>half){
+								isBlack = c;
+								break abc;
+							}
+						}else{
+							if(++b>half){
+
+								break abc;
+							}
+						}
+					}
+				}
+			}
+			arrBack.push(isBlack);
+			
+		}
+	}
+	var len = arrBack.length;
+	for(i = 0;i<len;i++){
+		var color = arrBack[i];
+
+		for(x = 0; x < grid; x++){
+
+			for( y =0;y<grid;y++){
+				index = y*width + i*grid+x;
+				arr[index] = color;
+				arr[index+1] = color;
+				arr[index+2] = color;
+				arr[index+3] = 255;
+			}
+		}
+
+	}
+
+	return back;
+
+	// var wTH = width/grid, hTH = height/grid
+
+	// for(var x = 0;x<wTH;x++){
+	// 	for(var y = 0;y<hTH;y++){
+	// 		// var m = y*wTH + x;
+	// 		for(var i = 0;i<grid;i++){
+
+	// 			for(var j=0;j<grid;j++){
+	// 				var n = (y*grid+j)*width + i + x*grid;
+	// 				n *= 4;
+	// 				var red1 = data1[n],
+	// 					green1 = data1[n + 1],
+	// 					blueene1 = data1[n + 2],
+	// 					red2 = data2[n],
+	// 					gr2 = data2[n + 1],
+	// 					blue2 = data2[n + 2];
+	// 				var average1 = (red1 + green1 + blue1) / 3;
+	// 				var average2 = (red2 + green2 + blue2) / 3;
+	// 				var diff = threshold(fastAbs(average2 - average1));
+
+	// 				arr[n] = diff;
+	// 				arr[n+1] = diff;
+	// 				arr[n+2] = diff;
+	// 				arr[n+3] = 255;
+	// 			}
+	// 		}
+
+			
+	// 	}
+	// }
+	// return back;
+	for(var x = 0;x<width;x++){
+		for(var y = 0;y<height;y++){
+			var n = (y*width + x)*4;
+			var red1 = data1[n],
+				green1 = data1[n + 1],
+				blue1 = data1[n + 2],
+				red2 = data2[n],
+				green2 = data2[n + 1],
+				blue2 = data2[n + 2];
+			var average1 = (red1 + green1 + blue1) / 3;
+			var average2 = (red2 + green2 + blue2) / 3;
+			var diff = threshold(fastAbs(average2 - average1));
+
+			arr[n] = diff;
+			arr[n+1] = diff;
+			arr[n+2] = diff;
+			arr[n+3] = 255;
+		}
+	}
+	return back;
+	for(var i = 0, len = data1.length/40; i < len; i++) {
+		for(var j = 0;j<40;j+=4){
+			var n = i*40 + j;
+			var red1 = data1[n],
+				green1 = data1[n + 1],
+				blue1 = data1[n + 2],
+				red2 = data2[n],
+				green2 = data2[n + 1],
+				blue2 = data2[n + 2];
+			var average1 = (red1 + green1 + blue1) / 3;
+			var average2 = (red2 + green2 + blue2) / 3;
+			var diff = threshold(fastAbs(average2 - average1));
+
+			arr[n] = diff;
+			arr[n+1] = diff;
+			arr[n+2] = diff;
+			arr[n+3] = 255;
+		}
+	}
+	return back;
+	for(var w = 0;w<640;w+=grid){
+		var w1 = w*grid;
+		for(var h = 0;h<480;h+=grid){
+			var h1 = h*grid;
+			var countBlack = 0, countWhite = 0;
+			var color = 255;
+			abc:{
+				for(var x = 0;x<grid;x++){
+					var x1 = w1+x;
+					for(var y = 0;y<grid;y++){
+						var y1 = h1+y;
+
+						var n = x1+y1;
+						var red1 = data1[n],
+							green1 = data1[n + 1],
+							blue1 = data1[n + 2],
+							red2 = data2[n],
+							green2 = data2[n + 1],
+							blue2 = data2[n + 2];
+						var average1 = (red1 + green1 + blue1) / 3;
+						var average2 = (red2 + green2 + blue2) / 3;
+						var diff = threshold(fastAbs(average2 - average1));
+
+						arr[n] = diff;
+						arr[n+1] = diff;
+						arr[n+2] = diff;
+						arr[n+3] = 255;
+
+						// if(threshold(fastAbs(average2 - average1))===255){
+						// 	countWhite++;
+						// 	if(countWhite>25){
+						// 		break abc;
+						// 	}
+						// }else{
+						// 	countBlack++;
+						// 	if(countBlack>25){
+						// 		color = 0;
+						// 		break abc;
+						// 	}
+						// }
+					}
+				}
+			}
+			// console.log(color);
+			// for(var x = 0;x<grid;x++){
+			// 	var x1 = w1+x;
+			// 	for(var y = 0;y<grid;y++){
+			// 		var y1 = h1+y;
+			// 		var n = x1+y1;
+			// 		arr[n] = color;
+			// 		arr[n+1] = color;
+			// 		arr[n+2] = color;
+			// 		arr[n+3] = 255;
+			// 	}
+			// }
+
+		}
+	}
+	// console.log(1);
+	// context.putImageData(back,0,0);
+	
+	
+	return back;
+}
+function fastAbs(value) {
+	// equivalent to Math.abs();
+	return (value ^ (value >> 31)) - (value >> 31);
+}
+function threshold(value) {
+	return (value > 0x15) ? 0xFF : 0;
+}
+function threshold2(value) {
+	return (value > 15) ? 0 : 0xFF;
+}
+function threshold3(value) {
+	return (value > 7) ? 0xFF : 0;
+}
+
+function blackAndWhite3() {	
+	var back = context.createImageData(width, height);
+	var arr = back.data;
+	var abc = [];
+	for(var i = 0, len = data1.length-1; i < len; i += 4) {
+		var red1 = data1[i],
+			green1 = data1[i + 1],
+			blue1 = data1[i + 2],
+			alpha1 = data1[i + 3],
+			red2 = data1[i+4],
+			green2 = data1[i + 5],
+			blue2 = data1[i + 6],
+			alpha2 = data1[i + 7];
+		// var a = red * .299 + green * .587 + blue * .114;
+		var average1 = (red1 + green1 + blue1 )/3;
+		var average2 = (red2 + green2 + blue2)/3;
+
+		var diff = threshold3(fastAbs(average2 - average1));
+
+		arr[i] = diff;
+		arr[i+1] = diff;
+		arr[i+2] = diff;
+		arr[i+3] = 255;
+	}
+	return back;
+}
+function blackAndWhite2() {	
+	var back = context.createImageData(width, height);
+	var arr = back.data;
+	for(var i = 0, len = data1.length; i < len; i += 4) {
+		var red1 = data1[i],
+			green1 = data1[i + 1],
+			blue1 = data1[i + 2],
+			alpha1 = data1[i + 3],
+			red2 = data2[i],
+			green2 = data2[i + 1],
+			blue2 = data2[i + 2],
+			alpha2 = data2[i + 3];
+		// var a = red * .299 + green * .587 + blue * .114;
+		var average1 = red1 * .299 + green1 * .587 + blue1 * .114;
+		var average2 = red2 * .299 + green2 * .587 + blue2 * .114;
+
+		var diff = threshold2(fastAbs(average2 - average1));
+
+		arr[i] = red1;
+		arr[i+1] = green1;
+		arr[i+2] = blue1;
+		arr[i+3] = diff;
+	}
+	return back;
+}
+function blackAndWhite() {	
+	var back = context.createImageData(width, height);
+	var arr = back.data;
+	for(var i = 0, len = data1.length; i < len; i += 4) {
+		var red1 = data1[i],
+			green1 = data1[i + 1],
+			blue1 = data1[i + 2],
+			alpha1 = data1[i + 3],
+			red2 = data2[i],
+			green2 = data2[i + 1],
+			blue2 = data2[i + 2],
+			alpha2 = data2[i + 3];
+		// var a = red * .299 + green * .587 + blue * .114;
+		var average1 = (red1 + green1 + blue1) / 3;
+		var average2 = (red2 + green2 + blue2) / 3;
+
+		var diff = threshold(fastAbs(average2 - average1));
+
+		arr[i] = diff;
+		arr[i+1] = diff;
+		arr[i+2] = diff;
+		arr[i+3] = 255;
+	}
+	return back;
+}
+function disColor() {
+	var back = context.createImageData(width, height);
+	var arr = back.data;
+
+	for(var i = 0, len = data1.length; i < len; i += 4) {
+		var red = data1[i],
+			green = data1[i + 1],
+			blue = data1[i + 2],
+			alpha = data1[i + 3];
+		var a = red * .299 + green * .587 + blue * .114;
+		arr[i] = a;
+		arr[i + 1] = a;
+		arr[i + 2] = a;
+		arr[i + 3] = alpha;
+	}
+	return back;
+}
+function invert(){
+	var back = context.createImageData(width,height);
+	var arr = back.data;
+
+	for(var i=0,len = data1.length;i<len;i+=4){
+		var red = data1[i],
+			green = data1[i+1],
+			blue = data1[i+2],
+			alpha = data1[i+3];
+
+		arr[i] = 255-red;
+		arr[i+1] = 255-green;
+		arr[i+2] = 255-blue;
+		arr[i+3] = alpha;
+	}
+	return back;
+}
+function check(){
+	var grid = 40;
+	var x = width/grid;
+	var y = height/grid;
+	var c = context;
+	for(var i = 0; i<x;i++){
+		var x1 = i*grid;
+		for(var j = 0;j<y;j++){
+			var y1 = j*grid;
+			var data = c.getImageData(x1,y1,grid,grid).data;
+			var len = data.length,average=0;
+			for(var n =0;n<len;n+=4){
+				average += (data[n]+data[n+2]+data[n+1])/3
+			}
+			average = Math.round(average / (len * 0.25));
+			if(average>100){
+
+			}
+		}
+	}
+}
+var count = 0;
+function checkIt(){
+	var data = context.getImageData(100,100,100,100).data;
+	var len = data.length,
+		average = 0;
+	for(var n =0;n<len;n+=4){
+		average += (data[n]+data[n+2]+data[n+1])/3
+	}
+	average = Math.round(average / (len * 0.25));
+	if(average>10){
+		console.log(count++);
+		// window.open(canvas.toDataURL( 'image/png' ));
+	}
+}
+</script>
+</body>
+</html>
+
+
+
+
+

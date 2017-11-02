@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>视频效果</title>
+	<style>
+		video,canvas{
+			box-shadow: 0 0 10px #000;
+		}
+		.all{
+			width:1260px;
+		}
+		.box{
+			width:400px;
+			float:left;
+			margin:0 10px;
+		}
+		h2{
+			font-size: 16px;
+			text-align: center;
+			text-shadow: 1px 0 1px #000;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="all">
+		<div class="box">
+			<h2>视频原图</h2>
+			<video id="webcam" autoplay width="400" height="300"></video>
+		</div>
+		<div class="box">
+			<h2>canvas 效果</h2>
+			<canvas id="canvas" width="400" height="300"></canvas>
+		</div>	
+		<div class="box">
+			<button onclick="copyVideo()">复制video图像</button>
+			<select name="" id="effect">
+				<option value="上下颠倒" data-revise="8">上下颠倒</option>
+				<option value="左右颠倒" data-revise="8">左右颠倒</option>
+				<option value="边缘检测" data-revise="8">边缘检测</option>
+				<option value="添加杂色" data-revise="8" selected>添加杂色</option>
+				<option value="灰度处理" data-revise="10">灰度处理</option>
+				<option value="暗角" data-revise="10">暗角</option>
+				<option value="锐化" data-revise="1">锐化</option>
+				<option value="腐蚀" data-revise="1">腐蚀</option>
+				<option value="油画" data-revise="4">油画</option>
+				<option value="马赛克" data-revise="0.5">马赛克</option>
+				<option value="色相/饱和度调节" data-revise="4">色相/饱和度调节</option>
+				<option value="浮雕效果" data-revise="1">浮雕效果</option>
+				<option value="亮度" data-revise="3">亮度</option>
+				<option value="高斯模糊" data-revise="4">高斯模糊</option>
+				<option value="反色" data-revise="1">反色</option>
+			</select>
+			<p>参数一：<input type="range" value="3" max="10" min="1" id="arg1" /></p>
+			<p>参数二：<input type="range" value="3" max="10" min="1" id="arg2" /></p>
+			<p>参数三：<input type="range" value="3" max="10" min="1" id="arg3" /></p>
+		</div>
+	</div>
+
+<script src="js/video.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+    "minimum_chrome_version": "20.0.0",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "short_name": "抓取",
+    "name": "特价推送抓取",
+    "description": "收集什么值得买、逛丢、惠惠网、天猫、京东、易迅、苏宁易购、亚马逊、一号店等各大购物网站的实时特价优惠信息，可以订阅关键词，白菜党必备神器！",
+    "icons": {
+        "128": "./logo_128.png",
+        "64": "./logo_64.png"
+    },
+    "permissions": ["tabs", "https://*/*", "http://*/*", "notifications", "webRequest", "webRequestBlocking"],
+    "background": {
+        "persistent": true,
+        "scripts": ["js/jquery.js", "js/background.js"]
+    },
+    "browser_action": {
+        "default_icon": "./logo_128.png",
+        "default_title": "特价推送抓取"
+    },
+    "web_accessible_resources": [
+        "css/*.css",
+        "img/*",
+        "js/*"
+    ]
+}

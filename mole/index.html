@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="UTF-8">
+    <title>打地鼠</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="http://apps.bdimg.com/libs/zepto/1.1.3/zepto.min.js"></script>
+    <script src="http://m.baidu.com/static/searchbox/openjs/aio.js"></script>
+</head>
+<body>
+<header>
+    <div class="logo"></div>
+    <div class="banner">
+        <img src="img/banner.png" alt="拍死五仁月饼" width="320px">
+    </div>
+    <div class="branch"></div>
+</header>
+<div class="timer">
+    <p>倒计时 <span id="J-timer">30</span>秒</p>
+    <div class="progress">
+        <span id="J-progress" class="pbar"></span>
+    </div>
+</div>
+<div class="game">
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<div class="item"></div>
+<canvas id="c"></canvas>
+</div>
+<footer>
+    <p>* 本活动最终解释权归主办方百度所有</p>
+    <p>&copy; 2014 Baidu </p>
+</footer>
+<script src="js/base/pool.js"></script>
+<script src="js/base/raf.js"></script>
+<script src="js/base/stage.js"></script>
+<script src="js/base/sprite.js"></script>
+<script src="js/cake.js"></script>
+<script src="js/base/pool.js"></script>
+<script src="js/main.js"></script>
+<div class="hmask" id="J-mask"></div>
+<div class="J-mydia mydia">
+    <div class="l-start">
+        <div class="lbanner">
+            <img src="./img/layer1.png" alt="拍死五仁月饼" width="184" />
+        </div>
+        <div class="btns">
+            <button id="J-start" class="J-start" disabled="disabled">加载中...</button>
+        </div>
+        <ul>
+            <li>拍死的五仁月饼数成为当日第一名，可获得价值200元的月饼券1份！</li>
+            <li>将本活动分享至朋友圈，截图发送给<span>@手机百度</span> 官方微信，还有iPad air和百度熊靠垫等你拿！</li>
+        </ul>
+    </div>
+</div>
+<div id="J-result" class="J-mydia mydia mydia2" style="display:none;">
+    <div class="l-over">
+        <!-- <a href="javascript:void(0);" class="close J-close">关闭</a> -->
+        <div class="over-banner">
+            <img src="./img/layer2.png" alt="月饼" width="81"/>
+            <span class="score">+<i class="J-num">0</i></span>
+        </div>
+        <div id="J-success" class="J-gameOver" style="display:none;">
+            <p>你一共拍死了<span class="num J-num">80</span>个五仁月饼，如此眼疾手快，五仁月饼都给你跪了！大奖向你招手，快来填地址吧！
+            </p>
+            <div class="btns">
+                <button id="J-address">填写地址</button>
+            </div>
+            <div class="btns">
+                <button class="J-start">再玩一次</button>
+            </div>
+        </div>
+        <div id="J-over" class="J-gameOver" style="display:none;">
+            <p>你一共拍死了<span class="num J-num">0</span>个五仁月饼，距离获得月饼券还差<span id="J-rank" class="rank">30</span>名，继续努力！</p>
+            <div class="btns">
+                <button id="J-share">分享也能赢大奖</button>
+            </div>
+            <div class="btns">
+                <button class="J-start">我还要玩一次！</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="loading J-loading" style="display:none">
+    <!-- <img src="./img/loading.gif" alt="加载中" /> -->
+</div>
+<div id="J-fail" style="display:none;"></div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+@import "compass/css3";
+
+*{
+    padding:0;
+    margin: 0;
+}
+
+body{
+    background: #1543aa url(../img/bg.png) no-repeat top center;
+    @include background-size(460px auto);
+}
+header{
+    position: relative;
+    width: 100%;
+    height: 144px;
+    margin-bottom: 5px;
+    .logo{
+        height: 24px;
+        width: 64px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        background: url(../img/logo.png) no-repeat center center;
+        @include background-size(64px auto);
+        z-index: 2;
+    }
+    .banner{
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        z-index: 1;
+    }
+    .banner img{
+        width: 320px;
+    }
+    .branch{
+        position: absolute;
+        z-index: 2;
+        top: 15px;
+        right: 0;
+        width: 129px;
+        height: 65px;
+        background: url(../img/branch.png) no-repeat center center;
+        @include background-size(129px auto);
+    }
+}
+.timer{
+    color: white;
+    width: 242px;
+    height: 30px;
+    margin: 0 auto 15px;
+    font-size: 12px;
+    p{
+        float: left;
+        margin-right: 5px;
+        height: 28px;
+        line-height: 28px;
+    }
+    #J-timer{
+        font-size: 18px;
+    }
+    .progress{
+        position: relative;
+        float:left;
+        width: 160px;
+        height: 10px;
+        background: #012e92;
+        margin-top: 10px;
+        @include border-radius(5px);
+        @include box-shadow(inset 0 0 13px rgba(0,0,0,.5))
+    }
+    .pbar{
+        position: absolute;
+        left: 0;
+        height: 10px;
+        width: 100%;
+        background-color: #e3350c;
+        @include background-image(linear-gradient(to right, #c42800, #de4a02));;
+        @include border-radius(5px 0 0 5px);
+    }
+}
+.game{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+    padding: 2.5px;
+    border: 1px solid #25a8e7;
+    background-color: #0480d1;
+
+    @include border-radius(5px);
+    div.item{
+        z-index: 1;
+        width: 93px;
+        height: 93px;
+        float: left;
+        margin: 2.5px;
+        background: #113992 url(../img/hole.png) no-repeat center center;
+        border:1px solid #25a8e7;
+        @include box-shadow(inset 0 5px 3px #012471);
+        @include background-size(80px auto);
+    }
+    canvas{
+        z-index: 999;
+        position: absolute;
+        top: 2.5px;
+        left: 2.5px;
+        width: 300px;
+        height: 300px;
+    }
+}
+footer p{
+    line-height: 18px;
+    color:#011134;
+    text-align: center;
+    font-size: 12px;
+}
+
+.hmask{
+    position: fixed;
+    height: 100%;
+
+    width: 100%;
+    bottom: 0;
+    top:0;
+    left:0;
+    right:0;
+    background: rgba(0,0,0,.6);
+    z-index: 999;
+}
+.mydia{
+    @include border-radius(10px);
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    width: 248px;
+    height: 259px;
+    margin-left: -124px;
+    background: #007be2 url(../img/bg2.png) no-repeat top center;
+    @include background-size(250px auto);
+    @include box-shadow(1px 3px 1px #0064b8);
+    z-index: 1999;
+
+    .l-start{
+        .lbanner {
+            margin: 5px auto 5px;
+            text-align: center;
+        }
+
+        ul{
+            list-style: decimal inside none;
+        }
+        li{
+            color:white;
+            font-size: 12px;
+            line-height: 16px;
+            padding: 0 15px;
+            span{
+                color:#fdfb37;
+            }
+        }
+    }
+    .btns{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+i{
+    font-style: normal;
+}
+.mydia2{
+    background: #007be2 url(../img/bg2.png) no-repeat center bottom;
+    height: 300px;
+    .close{
+        z-index: 29999;
+        background: url(../img/close.png) no-repeat top center;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        text-indent: -99em;
+        position: absolute;
+        right: -10px;
+        top: -8px;
+    }
+    .l-over{
+        p{
+            font-size: 14px;
+            line-height: 24px;
+            color:white;
+            padding: 0 13px 5px;
+        }
+        .num{
+            color:#fe621e;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+        .rank{
+            color: #fce918;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+    }
+    .over-banner{
+        position: relative;
+        text-align: center;
+        img{
+            margin:30px auto 10px;
+        }
+        span.score{
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            top: 25px;
+            right: 58px;
+            @include text-shadow(1px 1px 1px rgba(0,0,0,.75));
+        }
+    }
+
+}
+button{
+    color: white;
+    background: #fdd237;
+    border:0 none;
+    // height: 44px;
+    padding: 5px 12px;
+    font-size: 18px;
+    text-align: center;
+    @include text-shadow(1px 1px 1px #b58f04);
+    @include box-shadow(1px 3px 2px #c89d01);
+    @include border-radius(10px);
+    &[disabled]{
+        background-color: #E9B600;
+    }
+}
+.loading{
+    z-index: 39999;
+    position: fixed;
+    top: 48%;
+    left: 48%;
+    img{
+        background-color: transparent;
+    }
+}
+#J-fail{
+    z-index: 89999;
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;
+    bottom:0;
+    background: white;
+    opacity: 0;
+    width:100%;
+    height:100%;
+    -webkit-animation: fadeIn .6s both ease-in;
+    animation: fadeIn .6s both ease-in;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    30% {
+        opacity: .7;
+    }
+    50% {
+        opacity: .9;
+    }
+    100%{
+        opacity: 0
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    30% {
+        opacity: .7;
+    }
+    50% {
+        opacity: .9;
+    }
+    100%{
+        opacity: 0
+    }
+}
